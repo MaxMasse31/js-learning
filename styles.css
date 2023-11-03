@@ -199,6 +199,7 @@ a {
   opacity: 1;
   visibility: visible;
   top: 42px;
+  z-index: 10;
 }
 
 .range-section {
@@ -208,7 +209,7 @@ a {
   width: 100%;
   margin-top: 10px;
   clear: both;
-  z-index: -100;
+  z-index: 1;
 }
 
 /* Styles pour le input de type range */

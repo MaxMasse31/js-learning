@@ -99,7 +99,8 @@ boutonDecroissant.addEventListener("click", function () {
   piecesOrdonnees.sort(function (a, b) {
     return b.prix - a.prix;
   });
-  console.log(piecesOrdonnees);
+  sectionFiches.innerHTML = "";
+  genererPieces(piecesOrdonnees);
 });
 
 //bouton filter no description
@@ -108,5 +109,15 @@ btnNoDescription.addEventListener("click", function () {
   const noDesc = pieces.filter(function (el) {
     return !el.description;
   });
-  console.log(piecesFiltrees);
+  sectionFiches.innerHTML = "";
+  genererPieces(noDesc);
 });
+
+const inputPrixMax = document.querySelector('#prix-max')
+inputPrixMax.addEventListener('input', function(){
+    const piecesFiltrees = pieces.filter(function(piece){
+        return piece.prix <= inputPrixMax.value;
+    });
+    document.querySelector(".fiches").innerHTML = "";
+    genererPieces(piecesFiltrees);  
+})
