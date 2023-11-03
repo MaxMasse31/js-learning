@@ -1,16 +1,16 @@
 // Récupération des pièces depuis le fichier JSON
-const reponse = await fetch("pieces-autos.json");
-const pieces = await reponse.json();
+const pieces = await fetch("pieces-autos.json").then((pieces) => pieces.json());
 
 // Sélectionnez la section une seule fois
 const sectionFiches = document.querySelector(".fiches");
 
-for (let i = 0; i < pieces.length; i++) {
-  const article = pieces[i];
-
-  // Créez un template JavaScript
-  const template = document.createElement("template");
-  template.innerHTML = `
+//function qui génère toute la page web
+function genererPieces(pieces) {
+  for (let i = 0; i < pieces.length; i++) {
+    const article = pieces[i];
+    // Créez un template JavaScript
+    const template = document.createElement("template");
+    template.innerHTML = `
     <article class="produit">
       <img src="${article.image}">
       <h2>${article.nom}</h2>
@@ -24,12 +24,16 @@ for (let i = 0; i < pieces.length; i++) {
       }</p>
     </article>`;
 
-  // Cloner le contenu du template
-  const clone = document.importNode(template.content, true);
+    // Cloner le contenu du template
+    const clone = document.importNode(template.content, true);
 
-  // Ajoutez le contenu cloné au DOM
-  sectionFiches.appendChild(clone);
+    // Ajoutez le contenu cloné au DOM
+    sectionFiches.appendChild(clone);
+  }
 }
+
+// Premier affichage de la page
+genererPieces(pieces);
 
 ///////////////////////Produit Abordable///////////////////////////
 
@@ -48,7 +52,7 @@ for (let i = 0; i < pieceAbordable.length; i++) {
 // Ajout de l'en-tête puis de la liste au bloc résultats filtres
 document.querySelector(".abordables").appendChild(abordablesElements);
 
-///////////////////////Produit pièce dispobniel///////////////////////////
+///////////////////////Produit pièce disponible///////////////////////////
 const pieceDisponible = pieces
   .filter((piece) => piece.disponibilite === true)
   .map((piece) => piece.nom);
@@ -65,22 +69,27 @@ document.querySelector(".disponible").appendChild(dispoElement);
 ////////////////////////////////////////////////////////////////
 ///////////////////////Section Filter///////////////////////////
 
-//bouton trier
+//Ajout du listerner pour trier les pièces par ordre de prix croissant
 const boutonTrier = document.querySelector(".btn-trier");
 boutonTrier.addEventListener("click", function () {
-  pieces.sort(function (a, b) {
+  const piecesOrdonnees = Array.from(pieces);
+  piecesOrdonnees.sort(function (a, b) {
     return a.prix - b.prix;
   });
-  console.log(pieces);
+  // Effacement de l'écran et regénération de la page
+  sectionFiches.innerHTML = "";
+  genererPieces(piecesOrdonnees);
 });
 
-//bouton filter pieces non abordoble
+//Ajout du listerner pour bouton filter pieces non abordoble
 const boutonFiltrer = document.querySelector(".btn-filtrer");
 boutonFiltrer.addEventListener("click", function () {
   const piecesFiltrees = pieces.filter(function (piece) {
     return piece.prix <= 35;
   });
-  console.log(piecesFiltrees);
+
+  sectionFiches.innerHTML = "";
+  genererPieces(piecesFiltrees);
 });
 
 //pièce ordonné
