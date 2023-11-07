@@ -1,3 +1,5 @@
+import { ajoutListenersAvis } from "./avis.js";
+
 // Récupération des pièces depuis le fichier JSON
 const pieces = await fetch("pieces-autos.json").then((pieces) => pieces.json());
 
@@ -22,6 +24,12 @@ function genererPieces(pieces) {
       <p class="disponibilite">${
         article.disponibilite ? "En stock" : "Rupture de stock"
       }</p>
+
+      <button class="afficher-avis" data-id="${
+        article.id
+      }">Afficher les avis</button>
+
+
     </article>`;
 
     // Cloner le contenu du template
@@ -29,7 +37,9 @@ function genererPieces(pieces) {
 
     // Ajoutez le contenu cloné au DOM
     sectionFiches.appendChild(clone);
-  }
+  } // Ajout de la fonction ajoutListenersAvis
+
+  ajoutListenersAvis();
 }
 
 // Premier affichage de la page
@@ -113,11 +123,11 @@ btnNoDescription.addEventListener("click", function () {
   genererPieces(noDesc);
 });
 
-const inputPrixMax = document.querySelector('#prix-max')
-inputPrixMax.addEventListener('input', function(){
-    const piecesFiltrees = pieces.filter(function(piece){
-        return piece.prix <= inputPrixMax.value;
-    });
-    document.querySelector(".fiches").innerHTML = "";
-    genererPieces(piecesFiltrees);  
-})
+const inputPrixMax = document.querySelector("#prix-max");
+inputPrixMax.addEventListener("input", function () {
+  const piecesFiltrees = pieces.filter(function (piece) {
+    return piece.prix <= inputPrixMax.value;
+  });
+  document.querySelector(".fiches").innerHTML = "";
+  genererPieces(piecesFiltrees);
+});
