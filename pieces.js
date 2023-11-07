@@ -1,7 +1,8 @@
 import { ajoutListenersAvis } from "./avis.js";
 
 // Récupération des pièces depuis le fichier JSON
-const pieces = await fetch("pieces-autos.json").then((pieces) => pieces.json());
+const reponse = await fetch('http://localhost:8081/pieces/');
+const pieces = await reponse.json();
 
 // Sélectionnez la section une seule fois
 const sectionFiches = document.querySelector(".fiches");
