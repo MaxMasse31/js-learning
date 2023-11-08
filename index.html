@@ -14,9 +14,9 @@
     <main>
       <!-- Menu de recherche -->
       <section class="filtres">
-		<h3>Filtres</h3>
-        <div class="dropdown">	
-          <input style="z-index:3" class="dropdown-toggle" type="text" />
+        <h3>Filtres</h3>
+        <div class="dropdown">
+          <input style="z-index: 3" class="dropdown-toggle" type="text" />
           <div class="dropdown-text">Sélectionner un triage</div>
           <ul class="dropdown-content">
             <li class="btn-trier"><a href="#">Trier par prix croissant</a></li>
@@ -32,20 +32,34 @@
           </ul>
         </div>
 
-		<div class="pousse">&nbsp;</div>
+        <div class="pousse">&nbsp;</div>
 
-		<div class="range-section"> 
-        <h3 style="margin-bottom:15px;">Prix maximum:</h3>
-        <input
-          type="range"
-          name="prix-max"
-          id="prix-max"
-          min="0"
-          max="60"
-          step="5"
-        />
+        <div class="range-section">
+          <h3 style="margin-bottom: 15px">Prix maximum:</h3>
+          <input
+            type="range"
+            name="prix-max"
+            id="prix-max"
+            min="0"
+            max="60"
+            step="5"
+          />
+        </div>
+        <br />
 
-	</div>
+        <form class="formulaire-avis">
+          <label>Identifiant de la pièce : </label> 
+              <input type="number" name="piece-id" /><br/>
+          <label>  Nom d'utilisateur :</label>
+              <input type="text" name="utilisateur" />
+
+          <label>Avis : </label><br/>
+          <textarea name="commentaire" id="commentaire"></textarea>
+          <br/>
+          <br/>
+
+          <button>Envoyer</button>
+        </form>
       </section>
 
       <!-- Fiches produits -->
