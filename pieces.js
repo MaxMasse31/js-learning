@@ -1,8 +1,11 @@
-import { ajoutListenersAvis } from "./avis.js";
+import { ajoutListenersAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
 
 // Récupération des pièces depuis le fichier JSON
 const reponse = await fetch("http://localhost:8081/pieces/");
 const pieces = await reponse.json();
+
+//appel de la function
+ajoutListenerEnvoyerAvis();
 
 // Sélectionnez la section une seule fois
 const sectionFiches = document.querySelector(".fiches");
