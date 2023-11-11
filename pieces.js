@@ -4,6 +4,10 @@ import { ajoutListenersAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
 const reponse = await fetch("http://localhost:8081/pieces/");
 const pieces = await reponse.json();
 
+// Transformation des pièces en JSON
+const valeurPieces = JSON.stringify(pieces);
+
+
 //appel de la function
 ajoutListenerEnvoyerAvis();
 
