@@ -1,65 +1,101 @@
 import { ajoutListenersAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
-//Récupération des pièces eventuellement stockées dans le localStorage
-let pieces = window.localStorage.getItem('pieces');
 
-if (pieces === null){
-    // Récupération des pièces depuis l'API
-    const reponse = await fetch('http://localhost:8081/pieces/');
-    pieces = await reponse.json();
-    // Transformation des pièces en JSON
-    const valeurPieces = JSON.stringify(pieces);
-    // Stockage des informations dans le localStorage
-    window.localStorage.setItem("pieces", valeurPieces);
-}else{
-    pieces = JSON.parse(pieces);
+// Récupération des pièces éventuellement stockées dans le localStorage
+let pieces = window.localStorage.getItem("pieces");
+
+if (pieces === null) {
+  // Récupération des pièces depuis le fichier JSON
+  const reponse = await fetch("http://localhost:8081/pieces/");
+   pieces = await reponse.json();
+
+  // Transformation des pièces en JSON
+  const valeurPieces = JSON.stringify(pieces);
+  // Stockage des informations dans le localStorage
+  window.localStorage.setItem("pieces", valeurPieces);
+} else {
+  pieces = JSON.parse(pieces);
 }
-// on appel la fonction pour ajouter le listener au formulaire
-ajoutListenerEnvoyerAvis()
 
-function genererPieces(pieces){
-    for (let i = 0; i < pieces.length; i++) {
 
-        const article = pieces[i];
-        // Récupération de l'élément du DOM qui accueillera les fiches
-        const sectionFiches = document.querySelector(".fiches");
-        // Création d’une balise dédiée à une pièce automobile
-        const pieceElement = document.createElement("article");
-        // Création des balises 
-        const imageElement = document.createElement("img");
-        imageElement.src = article.image;
-        const nomElement = document.createElement("h2");
-        nomElement.innerText = article.nom;
-        const prixElement = document.createElement("p");
-        prixElement.innerText = `Prix: ${article.prix} € (${article.prix < 35 ? "€" : "€€€"})`;
-        const categorieElement = document.createElement("p");
-        categorieElement.innerText = article.categorie ?? "(aucune catégorie)";
-        const descriptionElement = document.createElement("p");
-        descriptionElement.innerText = article.description ?? "Pas de description pour le moment.";
-        const stockElement = document.createElement("p");
-        stockElement.innerText = article.disponibilite ? "En stock" : "Rupture de stock";
-        //Code ajouté
-        const avisBouton = document.createElement("button");
-        avisBouton.dataset.id = article.id;
-        avisBouton.textContent = "Afficher les avis";
-        
-        // On rattache la balise article a la section Fiches
-        sectionFiches.appendChild(pieceElement);
-        pieceElement.appendChild(imageElement);
-        pieceElement.appendChild(nomElement);
-        pieceElement.appendChild(prixElement);
-        pieceElement.appendChild(categorieElement);
-        pieceElement.appendChild(descriptionElement);
-        pieceElement.appendChild(stockElement);
-        //Code aJouté
-        pieceElement.appendChild(avisBouton);
-    
-     }
-     ajoutListenersAvis();
+//appel de la function
+ajoutListenerEnvoyerAvis();
+
+// Sélectionnez la section une seule fois
+const sectionFiches = document.querySelector(".fiches");
+
+//function qui génère toute la page web
+function genererPieces(pieces) {
+  for (let i = 0; i < pieces.length; i++) {
+    const article = pieces[i];
+    // Créez un template JavaScript
+    const template = document.createElement("template");
+    template.innerHTML = `
+    <article class="produit">
+      <img src="${article.image}">
+      <h2>${article.nom}</h2>
+      <p class="prix">Prix: ${article.prix} €</p>
+      <p class="categorie">${article.categorie ?? "(aucune catégorie)"}</p>
+      <p class="description">${
+        article.description ?? "Pas de description pour le moment."
+      }</p>
+      <p class="disponibilite">${
+        article.disponibilite ? "En stock" : "Rupture de stock"
+      }</p>
+
+      <button class="afficher-avis" data-id="${
+        article.id
+      }">Afficher les avis</button>
+
+
+    </article>`;
+
+    // Cloner le contenu du template
+    const clone = document.importNode(template.content, true);
+
+    // Ajoutez le contenu cloné au DOM
+    sectionFiches.appendChild(clone);
+  } // Ajout de la fonction ajoutListenersAvis
+
+  ajoutListenersAvis();
 }
 
 genererPieces(pieces);
 
- //gestion des boutons 
+// ///////////////////////Produit Abordable///////////////////////////
+
+// //mapper les pièce dont le prix est abordable
+// const pieceAbordable = pieces
+//   .filter((piece) => piece.prix <= 35)
+//   .map((piece) => piece.nom);
+
+// const abordablesElements = document.createElement("ul");
+// //Ajout de chaque nom à la liste
+// for (let i = 0; i < pieceAbordable.length; i++) {
+//   const nomElement = document.createElement("li");
+//   nomElement.innerText = pieceAbordable[i];
+//   abordablesElements.appendChild(nomElement);
+// }
+// // Ajout de l'en-tête puis de la liste au bloc résultats filtres
+// document.querySelector(".abordables").appendChild(abordablesElements);
+
+// ///////////////////////Produit pièce disponible///////////////////////////
+// const pieceDisponible = pieces
+//   .filter((piece) => piece.disponibilite === true)
+//   .map((piece) => piece.nom);
+
+// const dispoElement = document.createElement("ul");
+// for (let i = 0; i < pieceDisponible.length; i++) {
+//   const liElement = document.createElement("li");
+//   liElement.innerText = pieceDisponible[i];
+//   dispoElement.appendChild(liElement);
+// }
+
+// document.querySelector(".disponible").appendChild(dispoElement);
+
+////////////////////////////////////////////////////////////////
+///////////////////////Section Filter///////////////////////////
+
+//Ajout du listerner pour trier les pièces par ordre de prix croissant
 const boutonTrier = document.querySelector(".btn-trier");
 
 boutonTrier.addEventListener("click", function () {
