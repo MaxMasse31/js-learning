@@ -148,3 +148,9 @@ inputPrixMax.addEventListener("input", function () {
   document.querySelector(".fiches").innerHTML = "";
   genererPieces(piecesFiltrees);
 });
+
+// Ajout du listener pour mettre à jour des données du localStorage
+const boutonMettreAJour = document.querySelector(".btn-maj");
+boutonMettreAJour.addEventListener("click", function () {
+   window.localStorage.removeItem("pieces");
+});
