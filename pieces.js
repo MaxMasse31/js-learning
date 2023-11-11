@@ -64,37 +64,6 @@ genererPieces(pieces);
 
 // ///////////////////////Produit Abordable///////////////////////////
 
-// //mapper les pièce dont le prix est abordable
-// const pieceAbordable = pieces
-//   .filter((piece) => piece.prix <= 35)
-//   .map((piece) => piece.nom);
-
-// const abordablesElements = document.createElement("ul");
-// //Ajout de chaque nom à la liste
-// for (let i = 0; i < pieceAbordable.length; i++) {
-//   const nomElement = document.createElement("li");
-//   nomElement.innerText = pieceAbordable[i];
-//   abordablesElements.appendChild(nomElement);
-// }
-// // Ajout de l'en-tête puis de la liste au bloc résultats filtres
-// document.querySelector(".abordables").appendChild(abordablesElements);
-
-// ///////////////////////Produit pièce disponible///////////////////////////
-// const pieceDisponible = pieces
-//   .filter((piece) => piece.disponibilite === true)
-//   .map((piece) => piece.nom);
-
-// const dispoElement = document.createElement("ul");
-// for (let i = 0; i < pieceDisponible.length; i++) {
-//   const liElement = document.createElement("li");
-//   liElement.innerText = pieceDisponible[i];
-//   dispoElement.appendChild(liElement);
-// }
-
-// document.querySelector(".disponible").appendChild(dispoElement);
-
-////////////////////////////////////////////////////////////////
-///////////////////////Section Filter///////////////////////////
 
 //Ajout du listerner pour trier les pièces par ordre de prix croissant
 const boutonTrier = document.querySelector(".btn-trier");
