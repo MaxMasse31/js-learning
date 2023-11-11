@@ -1,5 +1,8 @@
 import { ajoutListenersAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
 
+// Récupération des pièces éventuellement stockées dans le localStorage
+const pieces = window.localStorage.getItem("pieces");
+
 // Récupération des pièces depuis le fichier JSON
 const reponse = await fetch("http://localhost:8081/pieces/");
 const pieces = await reponse.json();
