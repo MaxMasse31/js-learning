@@ -40,10 +40,23 @@ export function ajoutListenerEnvoyerAvis() {
   const chargeUtile = JSON.stringify(avis);
   // Appel de la fonction fetch avec toutes les informations nécessaires
   fetch("http://localhost:8081/avis", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: chargeUtile
-  });
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: chargeUtile
+}).then(() => {
+    // Fetch the updated reviews for the corresponding piece
+    const id = avis.pieceId;
+    return fetch(`http://localhost:8081/pieces/${id}/avis`);
+}).then(response => response.json())
+.then(updatedAvis => {
+    // Update the local storage with the new reviews
+    window.localStorage.setItem(`avis-piece-${id}`, JSON.stringify(updatedAvis));
+
+    // Find the corresponding article element and update the displayed reviews
+    const pieceElement = document.querySelector(`article[data-id="${id}"]`);
+    afficherAvis(pieceElement, updatedAvis);
+});
+
   });
   
 }

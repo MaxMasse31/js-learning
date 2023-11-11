@@ -1,4 +1,4 @@
-import { ajoutListenersAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
+import { ajoutListenersAvis, ajoutListenerEnvoyerAvis, afficherAvis } from "./avis.js";
 
 // Récupération des pièces éventuellement stockées dans le localStorage
 let pieces = window.localStorage.getItem("pieces");
@@ -32,7 +32,7 @@ function genererPieces(pieces) {
     // Créez un template JavaScript
     const template = document.createElement("template");
     template.innerHTML = `
-    <article class="produit">
+    <article class="produit" data-id="${article.id}">
       <img src="${article.image}">
       <h2>${article.nom}</h2>
       <p class="prix">Prix: ${article.prix} €</p>
@@ -56,13 +56,27 @@ function genererPieces(pieces) {
 
     // Ajoutez le contenu cloné au DOM
     sectionFiches.appendChild(clone);
-  } // Ajout de la fonction ajoutListenersAvis
 
+   
+  } // Ajout de la fonction ajoutListenersAvis
   ajoutListenersAvis();
+
 }
 
 // Premier affichage de la page
 genererPieces(pieces);
+
+
+for (let i = 0; i < pieces.length; i++) {
+  const id = pieces[i].id;
+  const avisJSON = window.localStorage.getItem(`avis-piece-${id}`);
+  const avis = JSON.parse(avisJSON);
+
+  if (avis !== null) {
+    const pieceElement = document.querySelector(`article[data-id="${id}"]`);
+    afficherAvis(pieceElement, avis);
+  }
+}
 
 // ///////////////////////Produit Abordable///////////////////////////
 
@@ -121,7 +135,15 @@ inputPrixMax.addEventListener("input", function () {
 });
 
 // Ajout du listener pour mettre à jour des données du localStorage
+// Ajout du listener pour mettre à jour des données du localStorage
 const boutonMettreAJour = document.querySelector(".btn-maj");
 boutonMettreAJour.addEventListener("click", function () {
-   window.localStorage.removeItem("pieces");
+    // Remove all reviews from localStorage
+    for (let i = 0; i < pieces.length; i++) {
+        const id = pieces[i].id;
+        window.localStorage.removeItem(`avis-piece-${id}`);
+    }
+
+    // Clear the "pieces" key
+    window.localStorage.removeItem("pieces");
 });
