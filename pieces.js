@@ -16,49 +16,35 @@ if (pieces === null){
 // on appel la fonction pour ajouter le listener au formulaire
 ajoutListenerEnvoyerAvis()
 
-function genererPieces(pieces){
-    for (let i = 0; i < pieces.length; i++) {
+function genererPiecesTemplate(pieces) {
+  let template = "";
 
-        const article = pieces[i];
-        // Récupération de l'élément du DOM qui accueillera les fiches
-        const sectionFiches = document.querySelector(".fiches");
-        // Création d’une balise dédiée à une pièce automobile
-        const pieceElement = document.createElement("article");
-        pieceElement.dataset.id = pieces[i].id
-        // Création des balises 
-        const imageElement = document.createElement("img");
-        imageElement.src = article.image;
-        const nomElement = document.createElement("h2");
-        nomElement.innerText = article.nom;
-        const prixElement = document.createElement("p");
-        prixElement.innerText = `Prix: ${article.prix} € (${article.prix < 35 ? "€" : "€€€"})`;
-        const categorieElement = document.createElement("p");
-        categorieElement.innerText = article.categorie ?? "(aucune catégorie)";
-        const descriptionElement = document.createElement("p");
-        descriptionElement.innerText = article.description ?? "Pas de description pour le moment.";
-        const stockElement = document.createElement("p");
-        stockElement.innerText = article.disponibilite ? "En stock" : "Rupture de stock";
-        //Code ajouté
-        const avisBouton = document.createElement("button");
-        avisBouton.dataset.id = article.id;
-        avisBouton.textContent = "Afficher les avis";
-        
-        // On rattache la balise article a la section Fiches
-        sectionFiches.appendChild(pieceElement);
-        pieceElement.appendChild(imageElement);
-        pieceElement.appendChild(nomElement);
-        pieceElement.appendChild(prixElement);
-        pieceElement.appendChild(categorieElement);
-        pieceElement.appendChild(descriptionElement);
-        pieceElement.appendChild(stockElement);
-        //Code aJouté
-        pieceElement.appendChild(avisBouton);
-    
-     }
-     ajoutListenersAvis();
+  for (let i = 0; i < pieces.length; i++) {
+      const article = pieces[i];
+
+      template += `
+          <article data-id="${pieces[i].id}">
+              <img src="${article.image}">
+              <h2>${article.nom}</h2>
+              <p>Prix: ${article.prix} € (${article.prix < 35 ? "€" : "€€€"})</p>
+              <p>${article.categorie ?? "(aucune catégorie)"}</p>
+              <p>${article.description ?? "Pas de description pour le moment."}</p>
+              <p>${article.disponibilite ? "En stock" : "Rupture de stock"}</p>
+              <button data-id="${article.id}">Afficher les avis</button>
+          </article>
+      `;
+  }
+
+  const sectionFiches = document.querySelector(".fiches");
+  sectionFiches.innerHTML = template;
+
+  ajoutListenersAvis();
 }
 
-genererPieces(pieces);
+genererPiecesTemplate(pieces);
+
+// Rest of the code remains unchanged
+
 
 for(let i = 0; i < pieces.length; i++){
     const id = pieces[i].id;
